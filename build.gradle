@@ -1,0 +1,59 @@
+buildscript {
+    ext.kotlinVersion = '0.13.1514'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.3'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'eu.appsatori.fatjar'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+[compileJava, compileTestJava].each {
+    it.options.encoding = 'UTF-8'
+}
+
+compileKotlin {
+    kotlinOptions.includeRuntime = true
+}
+
+fatJar {
+    baseName = 'yukarin'
+    version = '1.0.0'
+
+    manifest {
+        attributes 'Plugin-ID': 'info.shibafu528.jbs.Yukarin'
+        attributes 'Plugin-Name': 'ﾕｯｶﾘｰﾝ'
+        attributes 'Author': 'shibafu528'
+        attributes 'Author-Web': 'https://twitter.com/shibafu528'
+        attributes 'Plugin-Version': '1.0.0'
+        attributes 'Min-API-Version': '1.0.1'
+        attributes 'Plugin-Class': 'info.shibafu528.jbs.yukarin.YukarinPlugin'
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'http://repos.orekyuu.net/'
+    }
+}
+
+dependencies {
+    compile 'net.orekyuu:JavaBeamStudioAPI:1.0.1', {
+        ext {
+            fatJarExclude = true
+        }
+    }
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+}
